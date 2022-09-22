@@ -21,3 +21,8 @@ message Connect{
 }
 
 message Close{}
+
+service Broadcast{
+  rpc CreateStream(Connect) returns (stream Message);
+  rpc BroadCastMessage(Message) returns (Close);
+}
