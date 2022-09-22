@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package proto;
+option go_package = "github.com/Erickype/GoChatAppGRPC/proto";
+
+//models
+message User{
+  string id = 1;
+  string name = 2;
+}
