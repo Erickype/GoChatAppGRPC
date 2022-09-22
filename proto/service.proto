@@ -8,3 +8,9 @@ message User{
   string id = 1;
   string name = 2;
 }
+
+message Message{
+  string id = 1;
+  string content = 2;
+  string timestamp = 3;
+}
