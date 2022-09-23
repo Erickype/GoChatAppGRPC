@@ -19,6 +19,11 @@ type Connection struct {
 	error  chan error
 }
 
+type Server struct {
+	s          proto.UnimplementedBroadcastServer
+	Connection []*Connection
+}
+
 func main() {
 
 }
