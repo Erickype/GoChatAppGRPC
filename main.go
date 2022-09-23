@@ -24,6 +24,11 @@ type Server struct {
 	Connection []*Connection
 }
 
+func (s *Server) CreateStream(pconn *proto.Connect, stream proto.Broadcast_CreateStreamServer) error {
+
+	return nil
+}
+
 func main() {
 
 }
