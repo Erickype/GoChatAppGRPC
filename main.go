@@ -25,8 +25,15 @@ type Server struct {
 }
 
 func (s *Server) CreateStream(pconn *proto.Connect, stream proto.Broadcast_CreateStreamServer) error {
+	conn := &Connection{
+		stream: stream,
+		id:     pconn.User.Id,
+		active: true,
+		error:  make(chan error),
+	}
 
-	return nil
+	s.Connection = append(s.Connection, conn)
+	return <-conn.error
 }
 
 func main() {
