@@ -22,7 +22,7 @@ type Connection struct {
 }
 
 type Server struct {
-	s          proto.UnimplementedBroadcastServer
+	proto.UnimplementedBroadcastServer
 	Connection []*Connection
 }
 
@@ -71,5 +71,4 @@ func (s *Server) BroadCastMessage(_ context.Context, msg *proto.Message) (*proto
 }
 
 func main() {
-
 }
