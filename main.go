@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	"github.com/Erickype/GoChatAppGRPC/proto"
+	"google.golang.org/grpc"
 	log "google.golang.org/grpc/grpclog"
+	"net"
 	"os"
 	"sync"
 )
@@ -71,4 +73,23 @@ func (s *Server) BroadCastMessage(_ context.Context, msg *proto.Message) (*proto
 }
 
 func main() {
+	var connections []*Connection
+
+	server := &Server{
+		Connection: connections,
+	}
+
+	grpcServer := grpc.NewServer()
+	listener, err := net.Listen("tcp", ":8080")
+	if err != nil {
+		log.Fatalf("Error creating TCP conn: %v", err.Error())
+	}
+	log.Info("Starting server at port: 8080")
+
+	proto.RegisterBroadcastServer(grpcServer, server)
+	err = grpcServer.Serve(listener)
+	if err != nil {
+		log.Fatalf("Cannot initialize the server: %v", err.Error())
+	}
+
 }
