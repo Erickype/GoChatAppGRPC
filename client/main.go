@@ -6,6 +6,9 @@ import (
 	"flag"
 	"fmt"
 	"github.com/Erickype/GoChatAppGRPC/proto"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	log "google.golang.org/grpc/grpclog"
 	"sync"
 	"time"
 )
@@ -51,4 +54,9 @@ func main() {
 	name := flag.String("N", "Anon", "The name of the user")
 	flag.Parse()
 	id := sha256.Sum256([]byte(timestamp.String() + *name))
+
+	conn, err := grpc.Dial("localhost:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Fatalf("Could not connect: %v", err.Error())
+	}
 }
