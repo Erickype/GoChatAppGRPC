@@ -29,6 +29,14 @@ func connect(user *proto.User) error {
 
 	go func(str proto.Broadcast_CreateStreamClient) {
 		defer wait.Done()
+		for {
+			msg, err := str.Recv()
+			if err != nil {
+				streamError = fmt.Errorf("error reading message: %v", err.Error())
+				break
+			}
+			fmt.Printf("%v: %s\n", msg.Id, msg.Content)
+		}
 	}(stream)
 
 	return streamError
