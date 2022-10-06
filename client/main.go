@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
@@ -10,6 +11,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	log "google.golang.org/grpc/grpclog"
+	"os"
 	"sync"
 	"time"
 )
@@ -71,4 +73,17 @@ func main() {
 	if err != nil {
 		return
 	}
+
+	go func() {
+		defer wait.Done()
+		scanner := bufio.NewScanner(os.Stdin)
+
+		for scanner.Scan() {
+			msg := &proto.Message{
+				Id:        user.Id,
+				Content:   scanner.Text(),
+				Timestamp: timestamp.String(),
+			}
+		}
+	}()
 }
