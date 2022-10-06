@@ -10,10 +10,10 @@ import (
 	"sync"
 )
 
-var _ log.LoggerV2
+var grpcLog log.LoggerV2
 
 func init() {
-	_ = log.NewLoggerV2(os.Stdout, os.Stdout, os.Stdout)
+	grpcLog = log.NewLoggerV2(os.Stdout, os.Stdout, os.Stdout)
 }
 
 type Connection struct {
@@ -51,10 +51,10 @@ func (s *Server) BroadCastMessage(_ context.Context, msg *proto.Message) (*proto
 			defer wait.Done()
 			if conn.active {
 				err := conn.stream.Send(msg)
-				log.Infoln("Sending message to: ", conn.stream)
+				grpcLog.Infoln("Sending message to: ", conn.stream)
 
 				if err != nil {
-					log.Errorf("Error with stream: %s - Error: %v", conn.stream, err)
+					grpcLog.Errorf("Error with stream: %s - Error: %v", conn.stream, err)
 					conn.active = false
 					conn.error <- err
 				}
@@ -82,14 +82,14 @@ func main() {
 	grpcServer := grpc.NewServer()
 	listener, err := net.Listen("tcp", ":8080")
 	if err != nil {
-		log.Fatalf("Error creating TCP conn: %v", err.Error())
+		grpcLog.Fatalf("Error creating TCP conn: %v", err.Error())
 	}
-	log.Info("Starting server at port: 8080")
+	grpcLog.Info("Starting server at port: 8080")
 
 	proto.RegisterBroadcastServer(grpcServer, server)
 	err = grpcServer.Serve(listener)
 	if err != nil {
-		log.Fatalf("Cannot initialize the server: %v", err.Error())
+		grpcLog.Fatalf("Cannot initialize the server: %v", err.Error())
 	}
 
 }
