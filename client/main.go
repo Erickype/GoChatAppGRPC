@@ -2,9 +2,12 @@ package main
 
 import (
 	"context"
+	"crypto/sha256"
+	"flag"
 	"fmt"
 	"github.com/Erickype/GoChatAppGRPC/proto"
 	"sync"
+	"time"
 )
 
 var client proto.BroadcastClient
@@ -43,5 +46,9 @@ func connect(user *proto.User) error {
 }
 
 func main() {
-
+	timestamp := time.Now()
+	done := make(chan int)
+	name := flag.String("N", "Anon", "The name of the user")
+	flag.Parse()
+	id := sha256.Sum256([]byte(timestamp.String() + *name))
 }
