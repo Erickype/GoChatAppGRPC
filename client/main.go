@@ -84,6 +84,12 @@ func main() {
 				Content:   scanner.Text(),
 				Timestamp: timestamp.String(),
 			}
+
+			_, err := client.BroadCastMessage(context.Background(), msg)
+			if err != nil {
+				fmt.Printf("Error sending message: %v", err.Error())
+				break
+			}
 		}
 	}()
 }
