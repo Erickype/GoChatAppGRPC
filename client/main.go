@@ -6,7 +6,11 @@ import (
 )
 
 var _ proto.BroadcastClient
-var _ *sync.WaitGroup
+var wait *sync.WaitGroup
+
+func init() {
+	wait = &sync.WaitGroup{}
+}
 
 func main() {
 
