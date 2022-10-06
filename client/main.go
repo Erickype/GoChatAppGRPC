@@ -92,4 +92,10 @@ func main() {
 			}
 		}
 	}()
+
+	go func() {
+		wait.Wait()
+		close(done)
+	}()
+	<-done
 }
