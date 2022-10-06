@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"github.com/Erickype/GoChatAppGRPC/proto"
-	log "google.golang.org/grpc/grpclog"
 	"sync"
 )
 
@@ -22,7 +22,7 @@ func connect(user *proto.User) error {
 		Active: true,
 	})
 	if err != nil {
-		log.Fatalf("Error connecting: %v", err.Error())
+		return fmt.Errorf("error connecting: %v", err.Error())
 	}
 
 	return streamError
