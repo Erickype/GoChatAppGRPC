@@ -17,13 +17,19 @@ func init() {
 func connect(user *proto.User) error {
 	var streamError error
 
-	_, err := client.CreateStream(context.Background(), &proto.Connect{
+	stream, err := client.CreateStream(context.Background(), &proto.Connect{
 		User:   user,
 		Active: true,
 	})
 	if err != nil {
 		return fmt.Errorf("error connecting: %v", err.Error())
 	}
+
+	wait.Add(1)
+
+	go func(str proto.Broadcast_CreateStreamClient) {
+		defer wait.Done()
+	}(stream)
 
 	return streamError
 }
