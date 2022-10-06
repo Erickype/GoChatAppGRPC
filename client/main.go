@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"crypto/sha256"
+	"encoding/hex"
 	"flag"
 	"fmt"
 	"github.com/Erickype/GoChatAppGRPC/proto"
@@ -58,5 +59,16 @@ func main() {
 	conn, err := grpc.Dial("localhost:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("Could not connect: %v", err.Error())
+	}
+
+	client = proto.NewBroadcastClient(conn)
+	user := &proto.User{
+		Id:   hex.EncodeToString(id[:]),
+		Name: *name,
+	}
+
+	err = connect(user)
+	if err != nil {
+		return
 	}
 }
